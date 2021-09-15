@@ -16,7 +16,7 @@ public class CustomerServiceApplication {
 @Bean
 CommandLineRunner runner (ICustomerService iCustomerService){
         return  args -> {
-            iCustomerService.saveCustomer(new CustomerRequestDTO("fdz","yasser","yasserbha"));
+            iCustomerService.saveCustomer(new CustomerRequestDTO("iusgkdq","yasser","yasserbha"));
             iCustomerService.saveCustomer(new CustomerRequestDTO("fzfddsq","lina","linabha"));
         };
 }

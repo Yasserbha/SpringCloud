@@ -44,7 +44,7 @@ public class CustomerServiceImpl implements ICustomerService{
         */
         // remplace par
         Customer customer = customerMapper.customerRequestDTOtoCustomer(customerRequestDTO);
-        customer.setId(UUID.randomUUID().toString());
+       // customer.setId(UUID.randomUUID().toString());
         Customer customerSaved = customerRepository.save(customer);
         CustomerResponseDTO customerResponseDTO = customerMapper.customerToCustomerResponseDTO(customerSaved);
         return customerResponseDTO;

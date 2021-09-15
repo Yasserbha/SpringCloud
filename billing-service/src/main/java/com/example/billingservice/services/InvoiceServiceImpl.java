@@ -4,6 +4,7 @@ import com.example.billingservice.dto.InvoiceResponseDTO;
 import com.example.billingservice.dto.InvoiceResquestDTO;
 import com.example.billingservice.entities.Customer;
 import com.example.billingservice.entities.Invoice;
+import com.example.billingservice.exceptions.CustomerNotFounException;
 import com.example.billingservice.mappers.InvoiceMapper;
 import com.example.billingservice.openfeign.CustomerRestClient;
 import com.example.billingservice.repositories.InvoiceRepository;
@@ -29,8 +30,17 @@ public class InvoiceServiceImpl implements IInvoiceService{
 
     @Override
     public InvoiceResponseDTO saveInvoice(InvoiceResquestDTO invoiceResquestDTO) {
+        Customer customer = null;
+        try {
+             customer = customerRestClient.getCustomer(invoiceResquestDTO.getCustomerId());
+        }catch (Exception e){
+            throw new CustomerNotFounException("customer not found");
+        }
+
+
         Invoice invoice = invoiceMapper.fromInvoiceRequestDTO(invoiceResquestDTO);
         invoice.setId(UUID.randomUUID().toString());
+        invoice.setCustomer(customer);
         Invoice saveInvoice =  invoiceRepository.save(invoice);
         return invoiceMapper.fromInvoice(saveInvoice);
     }
@@ -60,6 +70,30 @@ public class InvoiceServiceImpl implements IInvoiceService{
     @Override
     public List<InvoiceResponseDTO> listInvoices(String customerId) {
         List<Invoice> invoices = invoiceRepository.findByCustomerId(customerId);
+        for (Invoice invoice: invoices){
+            Customer customer = customerRestClient.getCustomer(invoice.getCustomerId());
+            invoice.setCustomer(customer);
+        }
+        return invoices
+                .stream()
+                .map(invoice -> invoiceMapper.fromInvoice(invoice))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<InvoiceResponseDTO> allInvoices() {
+        List<Invoice> invoices = invoiceRepository.findAll();
+      /*
+        methode 1
+        invoices.forEach(invoice ->{
+                Customer customer = customerRestClient.getCustomer(invoice.getCustomerId());
+                invoice.setCustomer(customer);}
+        );
+    */
+        for (Invoice invoice: invoices){
+            Customer customer = customerRestClient.getCustomer(invoice.getCustomerId());
+            invoice.setCustomer(customer);
+        }
         return invoices
                 .stream()
                 .map(invoice -> invoiceMapper.fromInvoice(invoice))

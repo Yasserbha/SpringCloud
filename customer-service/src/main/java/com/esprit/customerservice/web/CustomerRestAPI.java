@@ -30,6 +30,7 @@ public class CustomerRestAPI {
 
     @PostMapping(path = "/saveCustomer")
     public CustomerResponseDTO saveCustomer(@RequestBody CustomerRequestDTO customerRequestDTO){
+        customerRequestDTO.setId(UUID.randomUUID().toString());
         return iCustomerService.saveCustomer(customerRequestDTO);
 
     }

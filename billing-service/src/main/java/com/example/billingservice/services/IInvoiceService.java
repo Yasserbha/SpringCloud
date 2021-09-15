@@ -11,5 +11,6 @@ public interface IInvoiceService {
     public InvoiceResponseDTO updateInvoice(InvoiceResquestDTO invoiceResquestDTO);
     public InvoiceResponseDTO getInvoice(String invoiceId);
     public List<InvoiceResponseDTO> listInvoices(String customerId);
+    public List<InvoiceResponseDTO> allInvoices();
 
 }

@@ -16,4 +16,5 @@ public class InvoiceResquestDTO {
 
     private BigDecimal amount;
     private String customerId;
+    private Date date;
 }

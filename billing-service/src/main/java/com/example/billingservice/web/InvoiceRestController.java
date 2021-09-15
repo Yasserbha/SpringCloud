@@ -3,6 +3,8 @@ package com.example.billingservice.web;
 import com.example.billingservice.dto.InvoiceResponseDTO;
 import com.example.billingservice.dto.InvoiceResquestDTO;
 import com.example.billingservice.services.IInvoiceService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class InvoiceRestController {
     public InvoiceResponseDTO getInvoice(@PathVariable(name = "id") String id){
        return iInvoiceService.getInvoice(id);
     }
-    @GetMapping(path = "/invoices/{customerId}")
+    @GetMapping(path = "/invoicesByCustomer/{customerId}")
     public List<InvoiceResponseDTO> listInvoice(@PathVariable(name = "customerId") String customerId){
         return iInvoiceService.listInvoices(customerId);
     }
@@ -36,6 +38,15 @@ public class InvoiceRestController {
     @DeleteMapping(path = "/deleteInvoice/{id}")
     public InvoiceResponseDTO deleteInvoice(@PathVariable(name = "id")String id){
         return iInvoiceService.deleteInvoice(id);
+    }
+    @GetMapping(path = "/listInvoices")
+    public List<InvoiceResponseDTO> allInvoices(){
+        return iInvoiceService.allInvoices();
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> exceptionHandler(Exception e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
