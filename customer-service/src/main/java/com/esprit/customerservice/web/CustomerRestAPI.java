@@ -4,6 +4,8 @@ import com.esprit.customerservice.dto.CustomerRequestDTO;
 import com.esprit.customerservice.dto.CustomerResponseDTO;
 import com.esprit.customerservice.entities.Customer;
 import com.esprit.customerservice.services.ICustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +16,16 @@ import java.util.UUID;
 public class CustomerRestAPI {
     private ICustomerService iCustomerService;
 
+    private static Logger logger = LoggerFactory.getLogger(CustomerRestAPI.class);
+
     public CustomerRestAPI(ICustomerService iCustomerService) {
         this.iCustomerService = iCustomerService;
     }
 
     @GetMapping(path = "/customers")
     public List<CustomerResponseDTO> listCustomer(){
-    return iCustomerService.listCustomer();
+        logger.info("all customer ");
+        return iCustomerService.listCustomer();
     }
 
     @GetMapping(path = "/customer/{id}")
